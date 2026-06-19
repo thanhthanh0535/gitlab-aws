@@ -36,8 +36,8 @@ ssh_deploy:
     - echo $SSH_PRIVATE_KEY
     # grant read-only permission to the private key
     - chmod 400 $SSH_PRIVATE_KEY
-    # install the OPENSSH agent
-    - apk add --no-cache openssh-client
+    # install the OPENSSH agent, rsync
+    - apk add --no-cache openssh-client rsync
     # start the ssh agent
     - eval $(ssh-agent -s) #set softshell variables env in current shell session
     # add SSH Key to agent
@@ -54,7 +54,9 @@ ssh_deploy:
     #- scp bar.txt $REMOTE_DEPLOY_USER@$REMOTE_DEPLOY_HOST:/tmp
     - ssh $REMOTE_DEPLOY_USER@$REMOTE_DEPLOY_HOST "whoami; touch /tmp/foo.txt; ls -l /tmp"
     #copy all the dir and files from build dir (but not build irself) to the remote destination
-    - scp -r build/* $REMOTE_DEPLOY_USER@$REMOTE_DEPLOY_HOST:/usr/share/nginx/html/
+    #- scp -r build/* $REMOTE_DEPLOY_USER@$REMOTE_DEPLOY_HOST:/usr/share/nginx/html/
+    # rvz: recursive, verbose, compress file data during the transfer
+    - rsync -rvz --delete build/ $REMOTE_DEPLOY_USER@$REMOTE_DEPLOY_HOST:/usr/share/nginx/html/
 
 
 
