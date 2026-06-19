@@ -33,9 +33,11 @@ ssh_deploy:
   script:
     - nc -zv $REMOTE_DEPLOY_HOST 22
     - echo $SSH_PRIVATE_KEY
-    - cat $SSH_PRIVATE_KEY
-    - ls -l $SSH_PRIVATE_KEY
     # grant read-only permission to the private key
     - chmod 400 $SSH_PRIVATE_KEY
-    - ls -l $SSH_PRIVATE_KEY
+    - apk add openssh-client
+    - eval $(ssh agent) #set softshell variables env in current shell session
+    - ssh-add $SSH_PRIVATE_KEY
+    - ssh -o StrictHostKeyChecking=no ec2-user@$REMOTE_DEPLOY_HOST
+
 
