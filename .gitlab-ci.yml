@@ -58,7 +58,7 @@ ssh_deploy:
     # rvz: recursive, verbose, compress file data during the transfer, also delete files in the destination that are not in the source
     #- rsync -rvz --delete build/ $REMOTE_DEPLOY_USER@$REMOTE_DEPLOY_HOST:/usr/share/nginx/html/
     - zip -r build.zip build/
-    - scp buid.zip ci/deploy.sh $REMOTE_DEPLOY_USER@$REMOTE_DEPLOY_HOST:~/deploy
+    - scp build.zip ci/deploy.sh $REMOTE_DEPLOY_USER@$REMOTE_DEPLOY_HOST:~/deploy
     - ssh $REMOTE_DEPLOY_USER@$REMOTE_DEPLOY_HOST "cd ~/deploy; chmod +x deploy.sh; ./deploy.sh"
 
 
