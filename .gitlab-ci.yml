@@ -36,8 +36,8 @@ ssh_deploy:
     - echo $SSH_PRIVATE_KEY
     # grant read-only permission to the private key
     - chmod 400 $SSH_PRIVATE_KEY
-    # install the OPENSSH agent, rsync
-    - apk add --no-cache openssh-client rsync
+    # install the OPENSSH agent, rsync, zip
+    - apk add --no-cache openssh-client rsync zip
     # start the ssh agent
     - eval $(ssh-agent -s) #set softshell variables env in current shell session
     # add SSH Key to agent
@@ -52,11 +52,13 @@ ssh_deploy:
     # open SSH connection + run cmd + add more file into /tmp
     #- touch bar.txt
     #- scp bar.txt $REMOTE_DEPLOY_USER@$REMOTE_DEPLOY_HOST:/tmp
-    - ssh $REMOTE_DEPLOY_USER@$REMOTE_DEPLOY_HOST "whoami; touch /tmp/foo.txt; ls -l /tmp"
+    #- ssh $REMOTE_DEPLOY_USER@$REMOTE_DEPLOY_HOST "whoami; touch /tmp/foo.txt; ls -l /tmp"
     #copy all the dir and files from build dir (but not build irself) to the remote destination
     #- scp -r build/* $REMOTE_DEPLOY_USER@$REMOTE_DEPLOY_HOST:/usr/share/nginx/html/
     # rvz: recursive, verbose, compress file data during the transfer, also delete files in the destination that are not in the source
-    - rsync -rvz --delete build/ $REMOTE_DEPLOY_USER@$REMOTE_DEPLOY_HOST:/usr/share/nginx/html/
-
+    #- rsync -rvz --delete build/ $REMOTE_DEPLOY_USER@$REMOTE_DEPLOY_HOST:/usr/share/nginx/html/
+    - zip -r build.zip buid/
+    - scp buid.zip ci/deploy.sh $REMOTE_DEPLOY_USER@$REMOTE_DEPLOY_HOST:~/deploy
+    - ssh $REMOTE_DEPLOY_USER@$REMOTE_DEPLOY_HOST "cd ~/deploy; chmod +x deploy.sh; ./deploy.sh"
 
 
