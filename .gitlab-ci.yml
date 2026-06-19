@@ -21,3 +21,5 @@ aws_s3:
   script:
     - aws --version
     - aws s3 ls
+    - echo "<h1>Hello S3!</h1>" > index.html
+    - aws s3 cp index.html s3://learn-gitlab-app-thanh/index.html
