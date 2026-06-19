@@ -26,19 +26,30 @@ build_website:
 #     # - aws s3 cp index.html s3://$AWS_S3_BUCKET/index.html
 #     - aws s3 sync ./build/ s3://$AWS_S3_BUCKET 
 
-# check if port 22 is open on the server
+
 ssh_deploy:
   stage: .pre
   image: alpine
   script:
+    # check if port 22 is open on the server
     - nc -zv $REMOTE_DEPLOY_HOST 22
     - echo $SSH_PRIVATE_KEY
     # grant read-only permission to the private key
     - chmod 400 $SSH_PRIVATE_KEY
+    # install the OPENSSH agent
     - apk add --no-cache openssh-client
+    # start the ssh agent
     - eval $(ssh-agent -s) #set softshell variables env in current shell session
+    # add SSH Key to agent
     - ssh-add $SSH_PRIVATE_KEY
-    - ssh -o StrictHostKeyChecking=no ec2-user@$REMOTE_DEPLOY_HOST ##bypassing strickey ec2-user cause they dont know host spec.
+    # create .ssh directory and set permissions
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    # create known_hosts file and add assign the right permissions
+    - cp $SSH_KNOWN_HOSTS ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+    # open SSH connection
+    - ssh -o StrictHostKeyChecking=no $REMOTE_DEPLOY_USER@$REMOTE_DEPLOY_HOST ##bypassing strickey ec2-user cause they dont know host spec.
 
 
 
