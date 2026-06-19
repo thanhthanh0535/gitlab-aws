@@ -13,6 +13,7 @@ build_website:
     paths:
       - build/
 
+# copy index.html to the bucker, connect gitlab to s3
 # aws_s3:
 #   stage: deploy
 #   image: 
@@ -25,11 +26,11 @@ build_website:
 #     # - aws s3 cp index.html s3://$AWS_S3_BUCKET/index.html
 #     - aws s3 sync ./build/ s3://$AWS_S3_BUCKET 
 
+# check if port 22 is open on the server
 ssh_deploy:
   stage: .pre
   image: alpine
   script:
-    # check if port 22 is open on the server
     - nc -zv 54.164.178.24 22
-    - nc -zv ec2-54-164-178-24.compute-1.amazonaws.com 22
+    - nc -zv $REMOTE_DEPLOY_HOST 22
 
