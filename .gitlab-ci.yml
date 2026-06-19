@@ -34,4 +34,7 @@ ssh_deploy:
     - nc -zv 54.164.178.24 22
     - nc -zv $REMOTE_DEPLOY_HOST 22
     - echo $SSH_PRIVATE_KEY
+    - ls -l $SSH_PRIVATE_KEY
+    - chmod 400 $SSH_PRIVATE_KEY
+    - ls -l $SSH_PRIVATE_KEY
 
