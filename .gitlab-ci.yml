@@ -12,3 +12,11 @@ build_website:
   artifacts:
     paths:
       - build/
+
+aws_s3:
+  stage: .pre
+  image: 
+    name: amazon/aws-cli
+    entrypoint: [""]
+  script:
+    - aws --version
