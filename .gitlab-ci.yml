@@ -31,7 +31,7 @@ ssh_deploy:
   stage: .pre
   image: alpine
   script:
-    - nc -zv 54.164.178.24 22
+    - nc -zv 13.218.219.215
     - nc -zv $REMOTE_DEPLOY_HOST 22
     - echo $SSH_PRIVATE_KEY
     - ls -l $SSH_PRIVATE_KEY
