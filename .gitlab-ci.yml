@@ -49,9 +49,11 @@ ssh_deploy:
     - cp $SSH_KNOWN_HOSTS ~/.ssh/known_hosts
     - chmod 644 ~/.ssh/known_hosts
   script:
-    # open SSH connection
+    # open SSH connection + run cmd
     ##bypassing strickey ec2-user cause they dont know host spec.
-    - ssh -o StrictHostKeyChecking=no $REMOTE_DEPLOY_USER@$REMOTE_DEPLOY_HOST "whoami; touch /tmp/foo.txt; ls -l /tmp" 
+    #- ssh -o StrictHostKeyChecking=no $REMOTE_DEPLOY_USER@$REMOTE_DEPLOY_HOST "whoami; touch /tmp/foo.txt; ls -l /tmp"
+    - touch bar.txt
+    - scp bar.txt $REMOTE_DEPLOY_USER@$REMOTE_DEPLOY_HOST "whoami; touch /tmp/touch.txt; ls -l /tmp"
 
 
 
