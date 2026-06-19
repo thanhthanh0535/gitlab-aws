@@ -33,6 +33,7 @@ ssh_deploy:
   script:
     - nc -zv $REMOTE_DEPLOY_HOST 22
     - echo $SSH_PRIVATE_KEY
+    - cat $SSH_PRIVATE_KEY
     - ls -l $SSH_PRIVATE_KEY
     # grant read-only permission to the private key
     - chmod 400 $SSH_PRIVATE_KEY
