@@ -20,6 +20,6 @@ aws_s3:
     entrypoint: [""]
   script:
     - aws --version
-    - aws s3 ls
+    - aws s3 ls #access s3 configuration
     - echo "<h1>Hello S3!</h1>" > index.html
-    - aws s3 cp index.html s3://learn-gitlab-app-thanh/index.html
+    - aws s3 cp index.html s3://$AWS_S3_BUCKET/index.html
