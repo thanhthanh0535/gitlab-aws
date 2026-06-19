@@ -20,3 +20,4 @@ aws_s3:
     entrypoint: [""]
   script:
     - aws --version
+    - aws s3 ls
