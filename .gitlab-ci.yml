@@ -28,7 +28,7 @@ build_website:
 
 
 ssh_deploy:
-  stage: .pre
+  stage: deploy
   image: alpine
   before_script:
     # check if port 22 is open on the server
@@ -49,12 +49,12 @@ ssh_deploy:
     - cp $SSH_KNOWN_HOSTS ~/.ssh/known_hosts
     - chmod 644 ~/.ssh/known_hosts
   script:
-    # open SSH connection + run cmd + add file
-    ##bypassing strickey ec2-user cause they dont know host spec.
-    #- ssh -o StrictHostKeyChecking=no $REMOTE_DEPLOY_USER@$REMOTE_DEPLOY_HOST "whoami; touch /tmp/foo.txt; ls -l /tmp"
-    - touch bar.txt
-    - scp bar.txt $REMOTE_DEPLOY_USER@$REMOTE_DEPLOY_HOST:/tmp
+    # open SSH connection + run cmd + add more file into /tmp
+    #- touch bar.txt
+    #- scp bar.txt $REMOTE_DEPLOY_USER@$REMOTE_DEPLOY_HOST:/tmp
     - ssh $REMOTE_DEPLOY_USER@$REMOTE_DEPLOY_HOST "whoami; touch /tmp/foo.txt; ls -l /tmp"
+    #update build dir to nginx html dir
+    - scp -r build/* $REMOTE_DEPLOY_USER@$REMOTE_DEPLOY_HOST:/usr/share/nginx/html/
 
 
 
