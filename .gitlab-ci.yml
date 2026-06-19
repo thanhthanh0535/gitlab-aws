@@ -35,7 +35,7 @@ ssh_deploy:
     - echo $SSH_PRIVATE_KEY
     # grant read-only permission to the private key
     - chmod 400 $SSH_PRIVATE_KEY
-    - apk add openssh-client
+    - apk add --no-cache openssh-client
     - eval $(ssh-agent) #set softshell variables env in current shell session
     - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
     - ssh -o StrictHostKeyChecking=no ec2-user@$REMOTE_DEPLOY_HOST  ##bypassing strickey ec2-user cause they dont know host spec.
