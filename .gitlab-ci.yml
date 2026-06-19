@@ -13,14 +13,23 @@ build_website:
     paths:
       - build/
 
-aws_s3:
-  stage: deploy
-  image: 
-    name: amazon/aws-cli:2.35.8
-    entrypoint: [""]
+# aws_s3:
+#   stage: deploy
+#   image: 
+#     name: amazon/aws-cli:2.35.8
+#     entrypoint: [""]
+#   script:
+#     - aws --version
+#     - aws s3 ls #access s3 configuration
+#     # - echo "<h1>Hello S3!</h1>" > index.html
+#     # - aws s3 cp index.html s3://$AWS_S3_BUCKET/index.html
+#     - aws s3 sync ./build/ s3://$AWS_S3_BUCKET 
+
+ssh_deploy:
+  stage: .pre
+  image: alpine
   script:
-    - aws --version
-    - aws s3 ls #access s3 configuration
-    # - echo "<h1>Hello S3!</h1>" > index.html
-    # - aws s3 cp index.html s3://$AWS_S3_BUCKET/index.html
-    - aws s3 sync ./build/ s3://$AWS_S3_BUCKET 
+    # check if port 22 is open on the server
+    - nc -zv 54.164.178.24 22
+    - nc -zv ec2-54-164-178-24.compute-1.amazonaws.com 22
+
