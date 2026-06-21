@@ -36,7 +36,7 @@ build_docker_image:
 
 
 ecs_deploy:
-  stage: .pre
+  stage: deploy
   image: 
     name: amazon/aws-cli:2.35.8
     entrypoint: [""]
