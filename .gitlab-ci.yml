@@ -4,7 +4,7 @@ stages:
   - deploy
 
 variables:
-  VITE_APP_VERSION: $CI_COMMIT_SHA
+  VITE_APP_VERSION: $CI_COMMIT_SHORT_SHA
 
 build_website:
   image: node:22-alpine
