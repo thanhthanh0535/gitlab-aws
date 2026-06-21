@@ -1,0 +1,26 @@
+{
+    "requiresCompatibilities": [
+        "FARGATE"
+    ],
+    "family": "Learn-Gitlab-app-Prod",
+    "containerDefinitions": [
+        {
+            "name": "learninggitlab",
+            "image": "nginx:1.27.3-alpine",
+            "portMappings": [
+                {
+                    "name": "nginx-80-tcp",
+                    "containerPort": 80,
+                    "protocol": "tcp",
+                    "appProtocol": "http"
+                }
+            ],
+            "essential": true
+        }
+    ],
+    "volumes": [],
+    "networkMode": "awsvpc",
+    "memory": "512",
+    "cpu": "256",
+    "executionRoleArn": "arn:aws:iam::058264148649:role/ecsTaskExecutionRole"
+}

@@ -13,52 +13,14 @@ build_website:
     paths:
       - build/
 
-# copy index.html to the bucker, connect gitlab to s3
-# aws_s3:
-#   stage: deploy
-#   image: 
-#     name: amazon/aws-cli:2.35.8
-#     entrypoint: [""]
-#   script:
-#     - aws --version
-#     - aws s3 ls #access s3 configuration
-#     # - echo "<h1>Hello S3!</h1>" > index.html
-#     # - aws s3 cp index.html s3://$AWS_S3_BUCKET/index.html
-#     - aws s3 sync ./build/ s3://$AWS_S3_BUCKET 
-
-
-ssh_deploy:
-  stage: deploy
-  image: alpine
-  before_script:
-    # check if port 22 is open on the server
-    - nc -zv $REMOTE_DEPLOY_HOST 22
-    - echo $SSH_PRIVATE_KEY
-    # grant read-only permission to the private key
-    - chmod 400 $SSH_PRIVATE_KEY
-    # install the OPENSSH agent, rsync, zip
-    - apk add --no-cache openssh-client rsync zip
-    # start the ssh agent
-    - eval $(ssh-agent -s) #set softshell variables env in current shell session
-    # add SSH Key to agent
-    - ssh-add $SSH_PRIVATE_KEY
-    # create .ssh directory and set permissions
-    - mkdir -p ~/.ssh
-    - chmod 700 ~/.ssh
-    # create known_hosts file and add assign the right permissions
-    - cp $SSH_KNOWN_HOSTS ~/.ssh/known_hosts
-    - chmod 644 ~/.ssh/known_hosts
+ecs_deploy:
+  stage: .pre
+  image: 
+    name: amazon/aws-cli:2.35.8
+    entrypoint: [""]
   script:
-    # open SSH connection + run cmd + add more file into /tmp
-    #- touch bar.txt
-    #- scp bar.txt $REMOTE_DEPLOY_USER@$REMOTE_DEPLOY_HOST:/tmp
-    #- ssh $REMOTE_DEPLOY_USER@$REMOTE_DEPLOY_HOST "whoami; touch /tmp/foo.txt; ls -l /tmp"
-    #copy all the dir and files from build dir (but not build irself) to the remote destination
-    #- scp -r build/* $REMOTE_DEPLOY_USER@$REMOTE_DEPLOY_HOST:/usr/share/nginx/html/
-    # rvz: recursive, verbose, compress file data during the transfer, also delete files in the destination that are not in the source
-    #- rsync -rvz --delete build/ $REMOTE_DEPLOY_USER@$REMOTE_DEPLOY_HOST:/usr/share/nginx/html/
-    - zip -r build.zip build/
-    - scp build.zip ci/deploy.sh $REMOTE_DEPLOY_USER@$REMOTE_DEPLOY_HOST:~/deploy
-    - ssh $REMOTE_DEPLOY_USER@$REMOTE_DEPLOY_HOST "cd ~/deploy; chmod +x deploy.sh; ./deploy.sh"
+    - aws --version
+    - aws ecs register-task-definition --cli-input-json file://aws/gitlab-prod.json
+
 
 
