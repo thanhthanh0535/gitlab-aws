@@ -1,3 +1,8 @@
+stages:
+  - build
+  - package
+  - deploy
+
 variables:
   VITE_APP_VERSION: $CI_COMMIT_SHA
 
@@ -17,7 +22,7 @@ build_docker_image:
   image:
     name: amazon/aws-cli:2.35.8
     entrypoint: [""]
-  stage: .pre
+  stage: package
   services:
     - docker:27-dind
   variables:
@@ -27,7 +32,7 @@ build_docker_image:
   script:
     - aws --version
     - docker version
-
+    - docker build -t gitlab-app-aws-ecs .
 
 
 ecs_deploy:
