@@ -29,7 +29,6 @@ build_docker_image:
     DOCKER_HOST: tcp://docker:2375/
   before_script:
     - dnf install -y docker
-    - service docker start
   script:
     - aws --version
     - docker version
