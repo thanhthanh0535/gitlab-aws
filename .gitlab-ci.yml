@@ -21,6 +21,7 @@ ecs_deploy:
   script:
     - aws --version
     - aws ecs register-task-definition --cli-input-json file://aws/gitlab-prod.json
+    - aws ecs update-service --cluster cluster-gitlab-1 --service Learn-Gitlab-app-Prod-service-9d4gfr69 --task-definition Learn-Gitlab-app-Prod
 
 
 
