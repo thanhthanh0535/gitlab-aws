@@ -28,7 +28,8 @@ build_docker_image:
   variables:
     DOCKER_HOST: tcp://docker:2375/
   before_script:
-    - amazon-linux-extras install docker
+    - dnf install -y docker
+    - service docker start
   script:
     - aws --version
     - docker version
