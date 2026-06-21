@@ -6,7 +6,7 @@
     "containerDefinitions": [
         {
             "name": "learninggitlab",
-            "image": "nginx:1.27.3-alpine",
+            "image": "058264148649.dkr.ecr.us-east-1.amazonaws.com/gitlap-app-aws-ecr",
             "portMappings": [
                 {
                     "name": "nginx-80-tcp",
