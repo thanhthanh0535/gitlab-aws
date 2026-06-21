@@ -21,12 +21,13 @@ build_docker_image:
   services:
     - docker:27-dind
   variables:
-    DOCKER-HOST: tcp://docker:2375/
+    DOCKER_HOST: tcp://docker:2375/
   before_script:
     - amazon-linux-extras install docker
   script:
     - aws --version
     - docker version
+
 
 
 ecs_deploy:
