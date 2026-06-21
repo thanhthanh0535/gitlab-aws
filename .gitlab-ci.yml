@@ -13,6 +13,22 @@ build_website:
     paths:
       - build/
 
+build_docker_image:
+  image:
+    name: amazon/aws-cli:2.35.8
+    entrypoint: [""]
+  stage: .pre
+  services:
+    - docker:27-dind
+  variables:
+    DOCKER-HOST: tcp://docker:2375/
+  before_script:
+    - amazon-linux-extras install docker
+  script:
+    - aws --version
+    - docker version
+
+
 ecs_deploy:
   stage: .pre
   image: 
@@ -22,6 +38,5 @@ ecs_deploy:
     - aws --version
     - aws ecs register-task-definition --cli-input-json file://aws/gitlab-prod.json
     - aws ecs update-service --cluster cluster-gitlab-1 --service Learn-Gitlab-app-Prod-service-9d4gfr69 --task-definition Learn-Gitlab-app-Prod
-
-
+    #- aws ecs wait services-stable --cluster cluster-gitlab-1 --services Learn-Gitlab-app-Prod-service-9d4gfr69
 
